@@ -6,44 +6,115 @@
 <title>H view — Business Field Company</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;background:#F0EDE6;
+html,body{width:100%;height:100%;overflow:hidden;background:#F5F0E8;
   font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;}
 
+/* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;justify-content:space-between;align-items:center;
-  padding:18px 40px;
+  padding:20px 44px;
 }
-.logo{font-size:26px;font-weight:900;color:#1a1a1a;letter-spacing:-1px;}
+.logo{font-size:28px;font-weight:900;color:#1a1a1a;letter-spacing:-1px;}
 .logo span{color:#E8450A;}
 .logo-sub{font-size:10px;letter-spacing:.18em;color:#E8450A;margin-top:2px;}
 .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;}
 .hamburger span{width:24px;height:2px;background:#1a1a1a;border-radius:2px;display:block;}
 
-.scene{position:relative;width:100vw;height:100vh;overflow:hidden;}
-
-/* 背景画像：そのまま全画面 */
-.bg{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:contain;
-  object-position:center center;
+/* SCENE */
+.scene{
+  position:relative;width:100vw;height:100vh;
+  overflow:hidden;
 }
 
-/* 雲だけ上に重ねてふわふわ */
-.cloud{
+/* 全パーツ共通 */
+img.p{
   position:absolute;
   pointer-events:none;
-  animation:cloudFloat 4s ease-in-out infinite;
+  /* デフォルトはそのまま */
 }
-.cloud-left  {width:19%;top:5%;left:1%; animation-delay:0s;}
-.cloud-center{width:16%;top:2%;left:28%;animation-delay:-1.5s;}
-.cloud-right {width:16%;top:4%;right:1%;animation-delay:-2.8s;}
 
+/* ===== 雲：ぷかぷか ===== */
+.cloud{animation:cloudFloat ease-in-out infinite;}
 @keyframes cloudFloat{
   0%,100%{transform:translateY(0);}
   50%    {transform:translateY(-10px);}
 }
+.cloud-a{animation-duration:4s;  animation-delay:0s;}
+.cloud-b{animation-duration:5s;  animation-delay:-1.8s;}
+.cloud-c{animation-duration:3.8s;animation-delay:-3s;}
+
+/* ===== 旗：風で揺れる ===== */
+.flag{
+  transform-origin:20% 95%;
+  animation:flagSway 2s ease-in-out infinite;
+}
+@keyframes flagSway{
+  0%,100%{transform:rotate(0deg);}
+  35%    {transform:rotate(3deg);}
+  70%    {transform:rotate(-1.5deg);}
+}
+
+/* ===== 木・草：左右に揺れる ===== */
+.tree{
+  transform-origin:50% 100%;
+  animation:treeSway ease-in-out infinite;
+}
+@keyframes treeSway{
+  0%,100%{transform:rotate(-1.5deg);}
+  50%    {transform:rotate(2deg);}
+}
+.tree-a{animation-duration:3s;  animation-delay:0s;}
+.tree-b{animation-duration:4s;  animation-delay:-1s;}
+.tree-c{animation-duration:3.5s;animation-delay:-2s;}
+.tree-d{animation-duration:2.8s;animation-delay:-.5s;}
+.bush{
+  transform-origin:50% 100%;
+  animation:treeSway 3.2s ease-in-out infinite;
+  animation-delay:-1.2s;
+}
+
+/* ===== ラベル：ふわっと上下 ===== */
+.label{animation:labelFloat ease-in-out infinite;}
+@keyframes labelFloat{
+  0%,100%{transform:translateY(0);}
+  50%    {transform:translateY(-7px);}
+}
+.label-food   {animation-duration:3s;  animation-delay:0s;}
+.label-fitness{animation-duration:3.5s;animation-delay:-1s;}
+.label-beauty {animation-duration:4s;  animation-delay:-2s;}
+.label-mkt    {animation-duration:3.2s;animation-delay:-.5s;}
+
+/* ===== コピー ===== */
+.copy{
+  position:absolute;
+  z-index:50;
+  left:3%;top:28%;
+  width:28%;
+}
+.copy h1{
+  font-size:clamp(20px,3vw,46px);
+  font-weight:900;line-height:1.3;
+  color:#1a1a1a;margin-bottom:12px;
+}
+.copy-en{
+  font-size:clamp(11px,1.1vw,16px);
+  color:#E8450A;font-weight:600;
+  line-height:1.7;margin-bottom:24px;
+}
+.cta{
+  display:inline-flex;align-items:center;gap:12px;
+  background:#E8450A;color:#fff;
+  padding:13px 28px;border-radius:50px;
+  font-size:clamp(12px,1.1vw,15px);font-weight:700;
+  cursor:pointer;border:none;
+  box-shadow:0 6px 20px rgba(232,69,10,.28);
+  transition:transform .2s,box-shadow .2s;
+}
+.cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,69,10,.4);}
+
+/* パララックスレイヤー */
+.layer{position:absolute;inset:0;pointer-events:none;will-change:transform;}
 </style>
 </head>
 <body>
@@ -56,12 +127,132 @@ nav{
   <div class="hamburger"><span></span><span></span><span></span></div>
 </nav>
 
-<div class="scene">
-  <img class="bg" src="./hview-hero.png" alt="H view">
-  <img class="cloud cloud-left"   src="./cloud_left.png"   alt="">
-  <img class="cloud cloud-center" src="./cloud_center.png" alt="">
-  <img class="cloud cloud-right"  src="./cloud_right.png"  alt="">
+<div class="scene" id="scene">
+
+  <!-- ===== 奥レイヤー（雲・空） ===== -->
+  <div class="layer" id="layerFar">
+    <img class="p cloud cloud-a" id="cloudA" src="./cloud_a.png" alt="">
+    <img class="p cloud cloud-b" id="cloudB" src="./cloud_b.png" alt="">
+    <img class="p cloud cloud-c" id="cloudC" src="./cloud_a.png" alt="">
+  </div>
+
+  <!-- ===== 中レイヤー（建物群・木） ===== -->
+  <div class="layer" id="layerMid">
+    <!-- Hビル（中央） -->
+    <img class="p" id="buildingH"   src="./building_h.png"          alt="H view">
+    <!-- カフェ・レストラン（左） -->
+    <img class="p" id="buildingCafe"   src="./building_cafe.png"     alt="CAFE">
+    <!-- GYM（右） -->
+    <img class="p" id="buildingGym"    src="./building_gym.png"      alt="GYM">
+    <!-- ビューティー（左下） -->
+    <img class="p" id="buildingBeauty" src="./building_beauty.png"   alt="BEAUTY SALON">
+    <!-- マーケティング（右下） -->
+    <img class="p" id="buildingMkt"    src="./building_marketing.png" alt="MARKETING">
+    <!-- 木 -->
+    <img class="p tree tree-a" id="treeG1" src="./tree_green.png"  alt="">
+    <img class="p tree tree-b" id="treeO1" src="./tree_orange.png" alt="">
+    <img class="p tree tree-c" id="treeG2" src="./tree_green.png"  alt="">
+    <img class="p tree tree-d" id="treeG3" src="./tree_green.png"  alt="">
+    <!-- 草 -->
+    <img class="p bush" id="bush1" src="./bushes.png" alt="">
+  </div>
+
+  <!-- ===== 手前レイヤー（旗・ラベル・自転車） ===== -->
+  <div class="layer" id="layerFront">
+    <img class="p flag"          id="flag"       src="./flag.png"          alt="">
+    <img class="p label label-food"    id="labelFood"    src="./labels_food.png"   alt="">
+    <img class="p label label-fitness" id="labelFit"     src="./labels_food.png"   alt="">
+    <img class="p label label-beauty"  id="labelBeauty"  src="./labels_beauty.png" alt="">
+    <img class="p label label-mkt"     id="labelMkt"     src="./labels_beauty.png" alt="">
+    <img class="p" id="bicycle" src="./bicycle.png" alt="">
+  </div>
+
+  <!-- コピー -->
+  <div class="copy">
+    <h1>多彩な事業で、<br>未来をもっと<br>豊かに。</h1>
+    <p class="copy-en">Diverse ideas. One purpose.<br>More smiles for the future.</p>
+    <button class="cta">私たちの事業を見る &nbsp;→</button>
+  </div>
+
 </div>
 
+<script>
+// 参考画像(1456x816)の座標を基準に各パーツを配置
+// left/top/width を % で指定（参考画像サイズ基準）
+// 参考画像サイズ: 約1456x816
+
+const layout = {
+  // 雲
+  cloudA: {l:1,   t:3,  w:14},
+  cloudB: {l:29,  t:1,  w:11},
+  cloudC: {l:76,  t:2,  w:11},
+  // Hビル
+  buildingH:      {l:42,  t:8,  w:22},
+  // カフェ・レストラン
+  buildingCafe:   {l:27,  t:22, w:18},
+  // GYM
+  buildingGym:    {l:72,  t:17, w:20},
+  // ビューティー
+  buildingBeauty: {l:24,  t:55, w:18},
+  // マーケティング
+  buildingMkt:    {l:74,  t:50, w:20},
+  // 木（緑）左
+  treeG1: {l:31,  t:25, w:5},
+  // 木（オレンジ）左上
+  treeO1: {l:38,  t:18, w:4.5},
+  // 木（緑）右
+  treeG2: {l:70,  t:25, w:5},
+  // 木（緑）右端
+  treeG3: {l:91,  t:28, w:5},
+  // 草
+  bush1:  {l:60,  t:72, w:10},
+  // 旗
+  flag:   {l:62,  t:8,  w:8},
+  // ラベル FOOD
+  labelFood:   {l:30,  t:12, w:9},
+  // ラベル FITNESS
+  labelFit:    {l:78,  t:16, w:10},
+  // ラベル BEAUTY
+  labelBeauty: {l:24,  t:47, w:9},
+  // ラベル MARKETING
+  labelMkt:    {l:76,  t:44, w:14},
+  // 自転車
+  bicycle: {l:68, t:45, w:8},
+};
+
+function applyLayout(){
+  for(const [id, pos] of Object.entries(layout)){
+    const el = document.getElementById(id);
+    if(!el) continue;
+    el.style.left  = pos.l + '%';
+    el.style.top   = pos.t + '%';
+    el.style.width = pos.w + '%';
+    el.style.height = 'auto';
+  }
+}
+applyLayout();
+
+// マウスパララックス（軽め）
+const layerFar   = document.getElementById('layerFar');
+const layerMid   = document.getElementById('layerMid');
+const layerFront = document.getElementById('layerFront');
+const scene      = document.getElementById('scene');
+
+let tx=0,ty=0,cx=0,cy=0;
+scene.addEventListener('pointermove',e=>{
+  const r=scene.getBoundingClientRect();
+  tx=((e.clientX-r.left)/r.width-.5)*20;
+  ty=((e.clientY-r.top)/r.height-.5)*12;
+});
+scene.addEventListener('pointerleave',()=>{tx=0;ty=0;});
+
+(function loop(){
+  cx+=(tx-cx)*.05; cy+=(ty-cy)*.05;
+  layerFar  .style.transform=`translate(${cx*.15}px,${cy*.15}px)`;
+  layerMid  .style.transform=`translate(${cx*.4}px,${cy*.4}px)`;
+  layerFront.style.transform=`translate(${cx*.7}px,${cy*.7}px)`;
+  requestAnimationFrame(loop);
+})();
+</script>
 </body>
 </html>
