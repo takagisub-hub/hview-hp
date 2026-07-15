@@ -37,8 +37,8 @@
       50% { transform: translate3d(-1.5%, -12%, 0); }
     }
     @keyframes flagWave {
-      0%,100% { transform: skewY(-0.28deg) scaleX(0.998); }
-      50% { transform: skewY(0.42deg) scaleX(0.992); }
+      0%, 100% { transform: translate3d(0, 0, 0) skewY(-0.55deg) scaleX(0.998) rotate(-0.12deg); }
+      50% { transform: translate3d(0.8%, 0, 0) skewY(0.95deg) scaleX(0.984) rotate(0.18deg); }
     }
     @keyframes labelBobA {
       0%,100% { transform: translate3d(0, 0, 0); }
@@ -50,9 +50,16 @@
     }
     .cloud-a { animation: cloudFloatA 4.6s ease-in-out infinite; }
     .cloud-b { animation: cloudFloatB 5.2s ease-in-out -1.3s infinite; }
-    .flag-wave { animation: flagWave 2.8s ease-in-out infinite; }
+    .flag-wave { animation: flagWave 2.35s ease-in-out infinite; }
     .label-a { animation: labelBobA 4.2s ease-in-out infinite; }
     .label-b { animation: labelBobB 4.8s ease-in-out -1.2s infinite; }
+
+    @keyframes steamRise {
+      0%, 100% { transform: translate3d(0, 0, 0) scaleY(1); opacity: 1; }
+      50% { transform: translate3d(2%, -10%, 0) scaleY(1.03); opacity: 0.96; }
+    }
+
+    .steam-rise { animation: steamRise 3.6s ease-in-out infinite; }
 
     @media (prefers-reduced-motion: reduce) {
       .motion-part { animation:none !important; }
@@ -90,6 +97,10 @@
     </div>
     <div class="motion-layer" data-depth="0.45" style="left:71.88995215%;top:13.28374070%;width:5.50239234%;height:7.33262487%;">
       <img class="motion-part flag-wave" src="assets/part_flag_h.png" alt="" draggable="false" style="transform-origin:7% 50%;">
+    </div>
+    <img class="cover-patch" src="assets/cover_steam.png" alt="" style="left:33.67224880%;top:47.50265675%;width:2.45215311%;height:5.10095643%;">
+    <div class="motion-layer" data-depth="0.22" style="left:33.67224880%;top:47.50265675%;width:2.45215311%;height:5.10095643%;">
+      <img class="motion-part steam-rise" src="assets/part_steam.png" alt="" draggable="false" style="transform-origin:50% 100%;">
     </div>
   </section>
   <script>
