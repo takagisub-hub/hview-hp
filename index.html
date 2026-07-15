@@ -9,158 +9,108 @@
 html,body{width:100%;height:100%;overflow:hidden;background:#F0EDE6;
   font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:300;
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;justify-content:space-between;align-items:center;
-  padding:18px 40px;}
+  padding:18px 40px;
+}
 .logo{font-size:26px;font-weight:900;color:#1a1a1a;letter-spacing:-1px;}
 .logo span{color:#E8450A;}
 .logo-sub{font-size:10px;letter-spacing:.18em;color:#E8450A;margin-top:2px;}
 .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;}
 .hamburger span{width:24px;height:2px;background:#1a1a1a;border-radius:2px;display:block;}
 
-/* SCENE */
+/* シーン全体：元画像を背景に */
 .scene{
-  position:relative;width:100vw;height:100vh;
+  position:relative;
+  width:100vw;height:100vh;
   overflow:hidden;
 }
 
-/* コピー */
-.copy{
-  position:absolute;left:5%;top:50%;transform:translateY(-50%);
-  z-index:100;
+/* 元画像を背景に敷く */
+.bg{
+  position:absolute;
+  /* 画像は3:2比率。画面に収めつつ中央配置 */
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:100%;height:100%;
+  object-fit:contain;
+  object-position:center center;
 }
-.copy h1{font-size:clamp(28px,4vw,52px);font-weight:900;line-height:1.25;
-  color:#1a1a1a;margin-bottom:12px;}
-.copy p{font-size:clamp(13px,1.4vw,17px);color:#E8450A;font-weight:600;
-  line-height:1.7;margin-bottom:28px;}
-.cta{display:inline-flex;align-items:center;gap:10px;
-  background:#E8450A;color:#fff;padding:14px 28px;border-radius:50px;
-  font-size:15px;font-weight:700;cursor:pointer;border:none;
-  box-shadow:0 6px 20px rgba(232,69,10,.3);
-  transition:transform .2s,box-shadow .2s;}
-.cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,69,10,.4);}
 
-/* 全パーツ共通 */
-.part{position:absolute;pointer-events:none;}
-img.part{image-rendering:auto;}
+/* 全アニメ要素はsceneに対してabsolute */
+/* 元画像1536x1024の%座標でそのまま配置 */
+/* object-fit:containで表示される実際の画像領域を計算してJSで補正 */
+
+.part{
+  position:absolute;
+  pointer-events:none;
+  transform-origin:center center;
+}
 
 /* 雲 */
-.cloud-left{
-  width:clamp(120px,14vw,200px);
-  top:8%;left:-15%;
-  animation:cloudRight 22s linear infinite;
-}
-.cloud-center{
-  width:clamp(100px,11vw,160px);
-  top:4%;left:60%;
-  animation:cloudLeft 30s linear infinite;
-  animation-delay:-10s;
-}
-.cloud-right{
-  width:clamp(90px,10vw,145px);
-  top:10%;right:-12%;
-  animation:cloudLeft 26s linear infinite;
-  animation-delay:-6s;
-}
-@keyframes cloudRight{from{left:-18%}to{left:115%}}
-@keyframes cloudLeft{from{right:-18%}to{right:115%}}
-
-/* Hビル */
-.h-building{
-  width:clamp(260px,32vw,480px);
-  top:5%;left:50%;transform:translateX(-50%);
-  animation:floatBuilding 4s ease-in-out infinite;
-  z-index:10;
-}
-@keyframes floatBuilding{
-  0%,100%{transform:translateX(-50%) translateY(0);}
-  50%    {transform:translateX(-50%) translateY(-8px);}
-}
+.cloud-left{animation:cloudR 22s linear infinite;}
+.cloud-center{animation:cloudL 30s linear infinite; animation-delay:-10s;}
+.cloud-right{animation:cloudL 26s linear infinite; animation-delay:-5s;}
+@keyframes cloudR{from{transform:translateX(-120%);}to{transform:translateX(600vw);}}
+@keyframes cloudL{from{transform:translateX(120%);}to{transform:translateX(-600vw);}}
 
 /* 旗 */
 .flag-pole{
-  width:clamp(80px,10vw,140px);
-  top:36%;right:10%;
+  transform-origin:50% 100%;
   animation:flagSway 1.8s ease-in-out infinite;
-  transform-origin:bottom center;
-  z-index:12;
 }
 @keyframes flagSway{
   0%,100%{transform:rotate(0deg);}
-  30%    {transform:rotate(1.5deg);}
-  70%    {transform:rotate(-1deg);}
+  40%{transform:rotate(2deg);}
+  70%{transform:rotate(-1.5deg);}
 }
 
 /* 自転車 */
 .bicycle{
-  width:clamp(80px,10vw,150px);
-  bottom:14%;left:60%;
   animation:bikeRide 9s ease-in-out infinite;
-  z-index:20;
 }
 @keyframes bikeRide{
-  0%  {transform:translateX(0)    scaleX(1);}
-  40% {transform:translateX(-220px) scaleX(1);}
-  50% {transform:translateX(-220px) scaleX(-1);}
-  90% {transform:translateX(0)    scaleX(-1);}
-  100%{transform:translateX(0)    scaleX(1);}
+  0%  {transform:translateX(0) scaleX(1);}
+  40% {transform:translateX(-15vw) scaleX(1);}
+  50% {transform:translateX(-15vw) scaleX(-1);}
+  90% {transform:translateX(0) scaleX(-1);}
+  100%{transform:translateX(0) scaleX(1);}
 }
 
-/* 木 */
-.tree-right{
-  width:clamp(80px,10vw,150px);
-  bottom:8%;right:5%;
-  transform-origin:50% 100%;
-  animation:treeSway 3s ease-in-out infinite;
-  z-index:8;
-}
-@keyframes treeSway{
-  0%,100%{transform:rotate(-1.5deg);}
-  50%    {transform:rotate(2deg);}
-}
-
-/* 低木 */
-.bush-bottom{
-  width:clamp(60px,8vw,110px);
-  bottom:5%;right:18%;
-  transform-origin:50% 100%;
-  animation:treeSway 2.5s ease-in-out infinite;
-  animation-delay:-.5s;
-}
-
-/* ラベル吹き出し */
+/* ラベル */
 .label{
-  z-index:30;
+  animation:labelPop 6s ease-in-out infinite;
   opacity:0;
-  transform:scale(.6) translateY(10px);
 }
-.label-food     {width:clamp(80px,9vw,130px); top:24%;left:28%;
-  animation:labelPop 6s 0.2s ease-in-out infinite;}
-.label-cafe     {width:clamp(70px,8vw,115px); top:36%;left:24%;
-  animation:labelPop 6s 1.0s ease-in-out infinite;}
-.label-fitness  {width:clamp(80px,9vw,130px); top:48%;left:26%;
-  animation:labelPop 6s 1.8s ease-in-out infinite;}
-.label-beauty-p {width:clamp(70px,8vw,115px); top:62%;left:32%;
-  animation:labelPop 6s 2.6s ease-in-out infinite;}
-.label-marketing{width:clamp(90px,10vw,145px);top:72%;left:28%;
-  animation:labelPop 6s 3.4s ease-in-out infinite;}
-
+.label-food    {animation-delay:0.2s;}
+.label-cafe    {animation-delay:1.0s;}
+.label-fitness {animation-delay:1.8s;}
+.label-beauty  {animation-delay:2.6s;}
+.label-mkt     {animation-delay:3.4s;}
 @keyframes labelPop{
-  0%,10%      {opacity:0;transform:scale(.6) translateY(10px);}
-  20%,72%     {opacity:1;transform:scale(1)  translateY(0);}
-  85%,100%    {opacity:0;transform:scale(.6) translateY(10px);}
+  0%,8%    {opacity:0;transform:scale(.7) translateY(8px);}
+  18%,72%  {opacity:1;transform:scale(1) translateY(0);}
+  85%,100% {opacity:0;transform:scale(.7) translateY(8px);}
 }
 
-/* 地面 */
-.ground{
-  position:absolute;bottom:0;left:0;right:0;
-  height:12%;
-  background:linear-gradient(to top,rgba(200,195,185,.4),transparent);
+/* コピー（元画像の左上エリアに合わせて配置） */
+.copy{
+  position:absolute;
+  z-index:50;
 }
-
-/* パララックスレイヤー */
-.layer{position:absolute;inset:0;pointer-events:none;will-change:transform;}
+.copy h1{font-size:clamp(22px,3.2vw,48px);font-weight:900;line-height:1.25;color:#1a1a1a;margin-bottom:10px;}
+.copy p{font-size:clamp(12px,1.2vw,16px);color:#E8450A;font-weight:600;line-height:1.7;margin-bottom:22px;}
+.cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:#E8450A;color:#fff;
+  padding:12px 24px;border-radius:50px;
+  font-size:clamp(12px,1.1vw,15px);font-weight:700;
+  cursor:pointer;border:none;
+  box-shadow:0 6px 20px rgba(232,69,10,.3);
+  transition:transform .2s,box-shadow .2s;
+}
+.cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,69,10,.4);}
 </style>
 </head>
 <body>
@@ -174,64 +124,114 @@ img.part{image-rendering:auto;}
 </nav>
 
 <div class="scene" id="scene">
+  <!-- 背景画像 -->
+  <img class="bg" id="bg" src="./hview-hero.png" alt="H view">
+
+  <!-- アニメーションパーツ（JSで位置計算） -->
+  <img class="part cloud-left"   id="cloudL" src="./cloud_left.png"      alt="">
+  <img class="part cloud-center" id="cloudC" src="./cloud_center.png"    alt="">
+  <img class="part cloud-right"  id="cloudR" src="./cloud_right.png"     alt="">
+  <img class="part flag-pole"    id="flag"   src="./flag_pole.png"       alt="">
+  <img class="part bicycle"      id="bike"   src="./bicycle.png"         alt="">
+  <img class="part label label-food"    id="lFood" src="./label_food.png"      alt="">
+  <img class="part label label-cafe"    id="lCafe" src="./label_cafe.png"      alt="">
+  <img class="part label label-fitness" id="lFit"  src="./label_fitness.png"   alt="">
+  <img class="part label label-beauty"  id="lBeau" src="./label_beauty_p.png"  alt="">
+  <img class="part label label-mkt"     id="lMkt"  src="./label_marketing.png" alt="">
 
   <!-- コピー -->
-  <div class="copy">
+  <div class="copy" id="copy">
     <h1>多彩な事業で、<br>未来をもっと<br>豊かに。</h1>
     <p>Diverse ideas. One purpose.<br>More smiles for the future.</p>
     <button class="cta">私たちの事業を見る →</button>
   </div>
-
-  <!-- 奥レイヤー：雲 -->
-  <div class="layer" id="layerFar">
-    <img class="part cloud-left"   src="./cloud_left.png"   alt="雲">
-    <img class="part cloud-center" src="./cloud_center.png" alt="雲">
-    <img class="part cloud-right"  src="./cloud_right.png"  alt="雲">
-  </div>
-
-  <!-- 中レイヤー：ビル・木・低木 -->
-  <div class="layer" id="layerMid">
-    <img class="part h-building"  src="./h_building.png"  alt="Hビル">
-    <img class="part tree-right"  src="./tree_right.png"  alt="木">
-    <img class="part bush-bottom" src="./bush_bottom.png" alt="低木">
-  </div>
-
-  <!-- 手前レイヤー：旗・自転車・ラベル -->
-  <div class="layer" id="layerFront">
-    <img class="part flag-pole"      src="./flag_pole.png"      alt="旗">
-    <img class="part bicycle"        src="./bicycle.png"        alt="自転車">
-    <img class="part label label-food"      src="./label_food.png"      alt="FOOD">
-    <img class="part label label-cafe"      src="./label_cafe.png"      alt="CAFE">
-    <img class="part label label-fitness"   src="./label_fitness.png"   alt="FITNESS">
-    <img class="part label label-beauty-p"  src="./label_beauty_p.png"  alt="BEAUTY">
-    <img class="part label label-marketing" src="./label_marketing.png" alt="MARKETING">
-  </div>
-
-  <div class="ground"></div>
 </div>
 
 <script>
-// マウスパララックス
-const scene      = document.getElementById('scene');
-const layerFar   = document.getElementById('layerFar');
-const layerMid   = document.getElementById('layerMid');
-const layerFront = document.getElementById('layerFront');
+// 元画像サイズ
+const IMG_W = 1536, IMG_H = 1024;
 
+// 元画像内のパーツ座標（px）
+const PARTS = {
+  cloudL: {l:0,   t:0,   r:290,  b:140},
+  cloudC: {l:290, t:50,  r:530,  b:170},
+  cloudR: {l:1290,t:0,   r:1536, b:130},
+  flag:   {l:1100,t:380, r:1360, b:640},
+  bike:   {l:620, t:660, r:900,  b:870},
+  lFood:  {l:40,  t:215, r:295,  b:340},
+  lCafe:  {l:40,  t:335, r:295,  b:455},
+  lFit:   {l:40,  t:455, r:295,  b:570},
+  lBeau:  {l:290, t:590, r:545,  b:700},
+  lMkt:   {l:290, t:700, r:590,  b:840},
+};
+
+// コピーエリア（元画像内の左上）
+const COPY_AREA = {l:40, t:280, r:480, b:580};
+
+function layout(){
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  // object-fit:containで画像がどう表示されるか計算
+  const imgRatio = IMG_W / IMG_H;
+  const vRatio   = vw / vh;
+
+  let dispW, dispH, offX, offY;
+  if(vRatio > imgRatio){
+    // 縦が基準
+    dispH = vh;
+    dispW = vh * imgRatio;
+    offX  = (vw - dispW) / 2;
+    offY  = 0;
+  } else {
+    // 横が基準
+    dispW = vw;
+    dispH = vw / imgRatio;
+    offX  = 0;
+    offY  = (vh - dispH) / 2;
+  }
+
+  const scaleX = dispW / IMG_W;
+  const scaleY = dispH / IMG_H;
+
+  // 各パーツを配置
+  for(const [id, box] of Object.entries(PARTS)){
+    const el = document.getElementById(id);
+    if(!el) continue;
+    const x = offX + box.l * scaleX;
+    const y = offY + box.t * scaleY;
+    const w = (box.r - box.l) * scaleX;
+    const h = (box.b - box.t) * scaleY;
+    el.style.left   = x + 'px';
+    el.style.top    = y + 'px';
+    el.style.width  = w + 'px';
+    el.style.height = h + 'px';
+  }
+
+  // コピーエリア配置
+  const copy = document.getElementById('copy');
+  copy.style.left = (offX + COPY_AREA.l * scaleX) + 'px';
+  copy.style.top  = (offY + COPY_AREA.t * scaleY) + 'px';
+  copy.style.width = ((COPY_AREA.r - COPY_AREA.l) * scaleX) + 'px';
+}
+
+layout();
+window.addEventListener('resize', layout);
+
+// マウスパララックス（軽め）
+const scene = document.getElementById('scene');
+const parts = document.querySelectorAll('.part');
 let tx=0,ty=0,cx=0,cy=0;
-
-scene.addEventListener('pointermove', e=>{
-  const r = scene.getBoundingClientRect();
-  tx = ((e.clientX-r.left)/r.width  - .5) * 30;
-  ty = ((e.clientY-r.top) /r.height - .5) * 20;
+scene.addEventListener('pointermove',e=>{
+  const r=scene.getBoundingClientRect();
+  tx=((e.clientX-r.left)/r.width-.5)*16;
+  ty=((e.clientY-r.top)/r.height-.5)*10;
 });
 scene.addEventListener('pointerleave',()=>{tx=0;ty=0;});
-
 (function loop(){
-  cx += (tx-cx)*.06;
-  cy += (ty-cy)*.06;
-  layerFar  .style.transform = `translate(${cx*.2}px,${cy*.2}px)`;
-  layerMid  .style.transform = `translate(${cx*.5}px,${cy*.5}px)`;
-  layerFront.style.transform = `translate(${cx*.9}px,${cy*.9}px)`;
+  cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
+  document.getElementById('bg').style.transform=
+    `translate(-50%,-50%) scale(1.03) translate(${-cx*.3}px,${-cy*.3}px)`;
   requestAnimationFrame(loop);
 })();
 </script>
