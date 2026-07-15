@@ -1,258 +1,182 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>H view — Business Field Company</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>H view Hero</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;height:100%;overflow:hidden;background:#F5F0E8;
-  font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;}
-
-/* NAV */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:300;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:20px 44px;
+:root{
+  --bg:#f7f3ed;
+  --ink:#17120f;
+  --orange:#ff4a0b;
 }
-.logo{font-size:28px;font-weight:900;color:#1a1a1a;letter-spacing:-1px;}
-.logo span{color:#E8450A;}
-.logo-sub{font-size:10px;letter-spacing:.18em;color:#E8450A;margin-top:2px;}
-.hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;}
-.hamburger span{width:24px;height:2px;background:#1a1a1a;border-radius:2px;display:block;}
-
-/* SCENE */
-.scene{
-  position:relative;width:100vw;height:100vh;
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#111;font-family:Arial,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+body{display:grid;place-items:center;padding:18px}
+.hero{
+  position:relative;
+  width:min(1600px,100vw - 36px);
+  aspect-ratio:1600/900;
   overflow:hidden;
+  background:
+    radial-gradient(circle at 58% 42%,rgba(255,255,255,.88),transparent 38%),
+    linear-gradient(115deg,#faf6f0,#f7f2eb 64%,#fbf8f4);
+  isolation:isolate;
 }
+.header{
+  position:absolute;left:2.8%;top:2.9%;z-index:60;
+  color:#080808;line-height:.88;letter-spacing:.01em
+}
+.logo{font-size:clamp(28px,3.2vw,54px);font-weight:800}
+.tagline{margin-top:13px;color:#ff4a0b;font-size:clamp(7px,.75vw,13px);font-weight:800;letter-spacing:.32em}
+.menu{
+  position:absolute;right:2.4%;top:4.6%;z-index:70;width:38px;height:28px
+}
+.menu span{position:absolute;left:0;width:100%;height:3px;background:#111;border-radius:3px}
+.menu span:nth-child(1){top:0}.menu span:nth-child(2){top:12px}.menu span:nth-child(3){top:24px}
 
-/* 全パーツ共通 */
-img.p{
-  position:absolute;
-  pointer-events:none;
-  /* デフォルトはそのまま */
-}
-
-/* ===== 雲：ぷかぷか ===== */
-.cloud{animation:cloudFloat ease-in-out infinite;}
-@keyframes cloudFloat{
-  0%,100%{transform:translateY(0);}
-  50%    {transform:translateY(-10px);}
-}
-.cloud-a{animation-duration:4s;  animation-delay:0s;}
-.cloud-b{animation-duration:5s;  animation-delay:-1.8s;}
-.cloud-c{animation-duration:3.8s;animation-delay:-3s;}
-
-/* ===== 旗：風で揺れる ===== */
-.flag{
-  transform-origin:20% 95%;
-  animation:flagSway 2s ease-in-out infinite;
-}
-@keyframes flagSway{
-  0%,100%{transform:rotate(0deg);}
-  35%    {transform:rotate(3deg);}
-  70%    {transform:rotate(-1.5deg);}
-}
-
-/* ===== 木・草：左右に揺れる ===== */
-.tree{
-  transform-origin:50% 100%;
-  animation:treeSway ease-in-out infinite;
-}
-@keyframes treeSway{
-  0%,100%{transform:rotate(-1.5deg);}
-  50%    {transform:rotate(2deg);}
-}
-.tree-a{animation-duration:3s;  animation-delay:0s;}
-.tree-b{animation-duration:4s;  animation-delay:-1s;}
-.tree-c{animation-duration:3.5s;animation-delay:-2s;}
-.tree-d{animation-duration:2.8s;animation-delay:-.5s;}
-.bush{
-  transform-origin:50% 100%;
-  animation:treeSway 3.2s ease-in-out infinite;
-  animation-delay:-1.2s;
-}
-
-/* ===== ラベル：ふわっと上下 ===== */
-.label{animation:labelFloat ease-in-out infinite;}
-@keyframes labelFloat{
-  0%,100%{transform:translateY(0);}
-  50%    {transform:translateY(-7px);}
-}
-.label-food   {animation-duration:3s;  animation-delay:0s;}
-.label-fitness{animation-duration:3.5s;animation-delay:-1s;}
-.label-beauty {animation-duration:4s;  animation-delay:-2s;}
-.label-mkt    {animation-duration:3.2s;animation-delay:-.5s;}
-
-/* ===== コピー ===== */
 .copy{
-  position:absolute;
-  z-index:50;
-  left:3%;top:28%;
-  width:28%;
+  position:absolute;left:3.1%;top:34%;z-index:55;width:29%;
+  color:#302116
 }
-.copy h1{
-  font-size:clamp(20px,3vw,46px);
-  font-weight:900;line-height:1.3;
-  color:#1a1a1a;margin-bottom:12px;
-}
-.copy-en{
-  font-size:clamp(11px,1.1vw,16px);
-  color:#E8450A;font-weight:600;
-  line-height:1.7;margin-bottom:24px;
-}
+.copy h1{margin:0;font-size:clamp(24px,3vw,50px);line-height:1.45;letter-spacing:.03em;font-weight:800}
+.copy p{margin:26px 0 0;color:var(--orange);font-size:clamp(12px,1.35vw,23px);line-height:1.5}
 .cta{
-  display:inline-flex;align-items:center;gap:12px;
-  background:#E8450A;color:#fff;
-  padding:13px 28px;border-radius:50px;
-  font-size:clamp(12px,1.1vw,15px);font-weight:700;
-  cursor:pointer;border:none;
-  box-shadow:0 6px 20px rgba(232,69,10,.28);
-  transition:transform .2s,box-shadow .2s;
+  margin-top:42px;width:286px;max-width:92%;height:64px;border:0;border-radius:999px;
+  background:linear-gradient(90deg,#ff4a0b,#ff4e10);color:#fff;font-size:clamp(13px,1.1vw,18px);
+  font-weight:800;letter-spacing:.08em;display:flex;align-items:center;justify-content:center;gap:24px;
+  box-shadow:0 8px 18px rgba(255,74,11,.08)
 }
-.cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,69,10,.4);}
+.cta b{font-size:34px;font-weight:300;line-height:1}
 
-/* パララックスレイヤー */
-.layer{position:absolute;inset:0;pointer-events:none;will-change:transform;}
+.layer{position:absolute;z-index:10;will-change:transform}
+.layer img{display:block;width:100%;height:auto;pointer-events:none;user-select:none}
+.parallax{transition:transform .18s ease-out}
+.cloud img{animation:bob 5.5s ease-in-out infinite}
+.cloud.c2 img{animation-duration:7.2s;animation-delay:-2s}
+.flag img{transform-origin:23% 30%;animation:flagWave 2.2s ease-in-out infinite}
+.tree img,.grass img{transform-origin:50% 100%;animation:sway 3.8s ease-in-out infinite}
+.tree.t2 img,.tree.t4 img,.grass.g2 img{animation-delay:-1.7s;animation-duration:4.6s}
+.label img{animation:floatLabel 3.6s ease-in-out infinite}
+.label.l2 img{animation-delay:-.9s}.label.l3 img{animation-delay:-1.8s}
+.label.l4 img{animation-delay:-2.5s}.label.l5 img{animation-delay:-1.2s}
+
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes flagWave{0%,100%{transform:rotate(-1deg) skewY(0)}50%{transform:rotate(2deg) skewY(-2deg)}}
+@keyframes sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.8deg)}}
+@keyframes floatLabel{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.c1{left:45.2%;top:18.9%;width:6.2%;z-index:4}
+.c2{left:78.2%;top:13.8%;width:5.8%;z-index:4}
+
+.hbuilding{left:48.2%;top:20.5%;width:31.2%;z-index:18}
+.cafe{left:32.8%;top:24.6%;width:16.2%;z-index:16}
+.gym{left:79.2%;top:27.7%;width:13.2%;z-index:16}
+.beauty{left:27.5%;top:58.2%;width:18.4%;z-index:20}
+.marketing{left:77.1%;top:59.3%;width:17.3%;z-index:20}
+.bicycle{left:73.4%;top:48.4%;width:7.1%;z-index:24}
+.flag{left:68.2%;top:9.5%;width:7.5%;z-index:28}
+
+.l1{left:34.5%;top:17.0%;width:6.6%;z-index:32}
+.l2{left:39.4%;top:25.9%;width:7.3%;z-index:31}
+.l3{left:84.8%;top:20.7%;width:7.4%;z-index:32}
+.l4{left:27.2%;top:57.3%;width:6.6%;z-index:32}
+.l5{left:83.3%;top:54.8%;width:10.4%;z-index:32}
+
+.t1{left:29.1%;top:25.1%;width:2.6%;z-index:13}
+.t2{left:24.7%;top:28.8%;width:2.3%;z-index:13}
+.t3{left:47.7%;top:58.8%;width:3.1%;z-index:25}
+.t4{left:73.0%;top:61.3%;width:2.3%;z-index:25}
+.t5{left:93.4%;top:37.6%;width:2.0%;z-index:14}
+.g1{left:52.4%;top:77.2%;width:5.2%;z-index:25}
+.g2{left:66.6%;top:76.4%;width:5.0%;z-index:25}
+.g3{left:79.0%;top:54.2%;width:2.8%;z-index:24}
+
+.roadline{position:absolute;height:2px;background:#54493e;opacity:.55;border-radius:2px;z-index:3}
+.r1{left:30.7%;top:45.2%;width:1.8%}.r2{left:46%;top:55.8%;width:2.4%}.r3{left:83%;top:49.3%;width:2.2%}
+.r4{left:88.5%;top:83%;width:1.8%}.r5{left:35%;top:86%;width:2.1%}
+
+@media (prefers-reduced-motion:reduce){
+  .cloud img,.flag img,.tree img,.grass img,.label img{animation:none!important}
+  .parallax{transition:none}
+}
+@media(max-width:900px){
+  body{padding:0;background:var(--bg)}
+  .hero{width:100vw;min-height:100svh;aspect-ratio:auto;overflow:hidden}
+  .hero::before{content:"";display:block;padding-top:56.25%}
+}
 </style>
 </head>
 <body>
-
-<nav>
-  <div>
-    <div class="logo">H <span>view</span></div>
-    <div class="logo-sub">BUSINESS FIELD COMPANY</div>
+<section class="hero" id="hero">
+  <div class="header">
+    <div class="logo">H view</div>
+    <div class="tagline">BUSINESS FIELD COMPANY</div>
   </div>
-  <div class="hamburger"><span></span><span></span><span></span></div>
-</nav>
+  <div class="menu" aria-label="menu"><span></span><span></span><span></span></div>
 
-<div class="scene" id="scene">
-
-  <!-- ===== 奥レイヤー（雲・空） ===== -->
-  <div class="layer" id="layerFar">
-    <img class="p cloud cloud-a" id="cloudA" src="./cloud_a.png" alt="">
-    <img class="p cloud cloud-b" id="cloudB" src="./cloud_b.png" alt="">
-    <img class="p cloud cloud-c" id="cloudC" src="./cloud_a.png" alt="">
-  </div>
-
-  <!-- ===== 中レイヤー（建物群・木） ===== -->
-  <div class="layer" id="layerMid">
-    <!-- Hビル（中央） -->
-    <img class="p" id="buildingH"   src="./building_h.png"          alt="H view">
-    <!-- カフェ・レストラン（左） -->
-    <img class="p" id="buildingCafe"   src="./building_cafe.png"     alt="CAFE">
-    <!-- GYM（右） -->
-    <img class="p" id="buildingGym"    src="./building_gym.png"      alt="GYM">
-    <!-- ビューティー（左下） -->
-    <img class="p" id="buildingBeauty" src="./building_beauty.png"   alt="BEAUTY SALON">
-    <!-- マーケティング（右下） -->
-    <img class="p" id="buildingMkt"    src="./building_marketing.png" alt="MARKETING">
-    <!-- 木 -->
-    <img class="p tree tree-a" id="treeG1" src="./tree_green.png"  alt="">
-    <img class="p tree tree-b" id="treeO1" src="./tree_orange.png" alt="">
-    <img class="p tree tree-c" id="treeG2" src="./tree_green.png"  alt="">
-    <img class="p tree tree-d" id="treeG3" src="./tree_green.png"  alt="">
-    <!-- 草 -->
-    <img class="p bush" id="bush1" src="./bushes.png" alt="">
-  </div>
-
-  <!-- ===== 手前レイヤー（旗・ラベル・自転車） ===== -->
-  <div class="layer" id="layerFront">
-    <img class="p flag"          id="flag"       src="./flag.png"          alt="">
-    <img class="p label label-food"    id="labelFood"    src="./labels_food.png"   alt="">
-    <img class="p label label-fitness" id="labelFit"     src="./labels_food.png"   alt="">
-    <img class="p label label-beauty"  id="labelBeauty"  src="./labels_beauty.png" alt="">
-    <img class="p label label-mkt"     id="labelMkt"     src="./labels_beauty.png" alt="">
-    <img class="p" id="bicycle" src="./bicycle.png" alt="">
-  </div>
-
-  <!-- コピー -->
   <div class="copy">
-    <h1>多彩な事業で、<br>未来をもっと<br>豊かに。</h1>
-    <p class="copy-en">Diverse ideas. One purpose.<br>More smiles for the future.</p>
-    <button class="cta">私たちの事業を見る &nbsp;→</button>
+    <h1>多彩な事業で、<br>未来をもっと豊かに。</h1>
+    <p>Diverse ideas. One purpose.<br>More smiles for the future.</p>
+    <button class="cta">私たちの事業を見る <b>→</b></button>
   </div>
 
-</div>
+  <div class="layer parallax cloud c1" data-depth="0.14"><img src="assets/cloud1.png" alt=""></div>
+  <div class="layer parallax cloud c2" data-depth="0.10"><img src="assets/cloud2.png" alt=""></div>
+
+  <div class="layer parallax cafe" data-depth="0.22"><img src="assets/cafe.png" alt="CAFE"></div>
+  <div class="layer parallax hbuilding" data-depth="0.09"><img src="assets/h_building.png" alt="H view"></div>
+  <div class="layer parallax gym" data-depth="0.18"><img src="assets/gym.png" alt="GYM"></div>
+  <div class="layer parallax beauty" data-depth="0.24"><img src="assets/beauty.png" alt="BEAUTY SALON"></div>
+  <div class="layer parallax marketing" data-depth="0.20"><img src="assets/marketing.png" alt="MARKETING & CONSULTING"></div>
+
+  <div class="layer parallax bicycle" data-depth="0.30"><img src="assets/bicycle.png" alt=""></div>
+  <div class="layer parallax flag" data-depth="0.13"><img src="assets/flag_h.png" alt=""></div>
+
+  <div class="layer parallax label l1" data-depth="0.34"><img src="assets/label_food.png" alt="FOOD"></div>
+  <div class="layer parallax label l2" data-depth="0.26"><img src="assets/label_cafe.png" alt="CAFE"></div>
+  <div class="layer parallax label l3" data-depth="0.32"><img src="assets/label_fitness.png" alt="FITNESS"></div>
+  <div class="layer parallax label l4" data-depth="0.35"><img src="assets/label_beauty.png" alt="BEAUTY"></div>
+  <div class="layer parallax label l5" data-depth="0.30"><img src="assets/label_marketing.png" alt="MARKETING & CONSULTING"></div>
+
+  <div class="layer parallax tree t1" data-depth="0.16"><img src="assets/tree_green.png" alt=""></div>
+  <div class="layer parallax tree t2" data-depth="0.21"><img src="assets/tree_yellow.png" alt=""></div>
+  <div class="layer parallax tree t3" data-depth="0.27"><img src="assets/tree_green.png" alt=""></div>
+  <div class="layer parallax tree t4" data-depth="0.24"><img src="assets/tree_green.png" alt=""></div>
+  <div class="layer parallax tree t5" data-depth="0.17"><img src="assets/tree_green.png" alt=""></div>
+
+  <div class="layer parallax grass g1" data-depth="0.22"><img src="assets/bush1.png" alt=""></div>
+  <div class="layer parallax grass g2" data-depth="0.25"><img src="assets/bush1.png" alt=""></div>
+  <div class="layer parallax grass g3" data-depth="0.31"><img src="assets/grass1.png" alt=""></div>
+
+  <span class="roadline r1"></span><span class="roadline r2"></span><span class="roadline r3"></span>
+  <span class="roadline r4"></span><span class="roadline r5"></span>
+</section>
 
 <script>
-// 参考画像(1456x816)の座標を基準に各パーツを配置
-// left/top/width を % で指定（参考画像サイズ基準）
-// 参考画像サイズ: 約1456x816
+const hero = document.getElementById('hero');
+const layers = [...hero.querySelectorAll('.parallax')];
+let tx = 0, ty = 0, raf = 0;
 
-const layout = {
-  // 雲
-  cloudA: {l:1,   t:3,  w:14},
-  cloudB: {l:29,  t:1,  w:11},
-  cloudC: {l:76,  t:2,  w:11},
-  // Hビル
-  buildingH:      {l:42,  t:8,  w:22},
-  // カフェ・レストラン
-  buildingCafe:   {l:27,  t:22, w:18},
-  // GYM
-  buildingGym:    {l:72,  t:17, w:20},
-  // ビューティー
-  buildingBeauty: {l:24,  t:55, w:18},
-  // マーケティング
-  buildingMkt:    {l:74,  t:50, w:20},
-  // 木（緑）左
-  treeG1: {l:31,  t:25, w:5},
-  // 木（オレンジ）左上
-  treeO1: {l:38,  t:18, w:4.5},
-  // 木（緑）右
-  treeG2: {l:70,  t:25, w:5},
-  // 木（緑）右端
-  treeG3: {l:91,  t:28, w:5},
-  // 草
-  bush1:  {l:60,  t:72, w:10},
-  // 旗
-  flag:   {l:62,  t:8,  w:8},
-  // ラベル FOOD
-  labelFood:   {l:30,  t:12, w:9},
-  // ラベル FITNESS
-  labelFit:    {l:78,  t:16, w:10},
-  // ラベル BEAUTY
-  labelBeauty: {l:24,  t:47, w:9},
-  // ラベル MARKETING
-  labelMkt:    {l:76,  t:44, w:14},
-  // 自転車
-  bicycle: {l:68, t:45, w:8},
-};
-
-function applyLayout(){
-  for(const [id, pos] of Object.entries(layout)){
-    const el = document.getElementById(id);
-    if(!el) continue;
-    el.style.left  = pos.l + '%';
-    el.style.top   = pos.t + '%';
-    el.style.width = pos.w + '%';
-    el.style.height = 'auto';
+function applyParallax(){
+  for (const layer of layers){
+    const d = Number(layer.dataset.depth || 0);
+    layer.style.transform = `translate3d(${tx*d}px, ${ty*d}px, 0)`;
   }
+  raf = 0;
 }
-applyLayout();
 
-// マウスパララックス（軽め）
-const layerFar   = document.getElementById('layerFar');
-const layerMid   = document.getElementById('layerMid');
-const layerFront = document.getElementById('layerFront');
-const scene      = document.getElementById('scene');
-
-let tx=0,ty=0,cx=0,cy=0;
-scene.addEventListener('pointermove',e=>{
-  const r=scene.getBoundingClientRect();
-  tx=((e.clientX-r.left)/r.width-.5)*20;
-  ty=((e.clientY-r.top)/r.height-.5)*12;
+hero.addEventListener('pointermove', (e) => {
+  const r = hero.getBoundingClientRect();
+  tx = ((e.clientX-r.left)/r.width - .5) * 26;
+  ty = ((e.clientY-r.top)/r.height - .5) * 18;
+  if (!raf) raf = requestAnimationFrame(applyParallax);
 });
-scene.addEventListener('pointerleave',()=>{tx=0;ty=0;});
 
-(function loop(){
-  cx+=(tx-cx)*.05; cy+=(ty-cy)*.05;
-  layerFar  .style.transform=`translate(${cx*.15}px,${cy*.15}px)`;
-  layerMid  .style.transform=`translate(${cx*.4}px,${cy*.4}px)`;
-  layerFront.style.transform=`translate(${cx*.7}px,${cy*.7}px)`;
-  requestAnimationFrame(loop);
-})();
+hero.addEventListener('pointerleave', () => {
+  tx = 0; ty = 0;
+  if (!raf) raf = requestAnimationFrame(applyParallax);
+});
 </script>
 </body>
 </html>
