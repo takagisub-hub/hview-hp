@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>H view Hero</title>
   <style>
-    :root {
-      --hero-ratio: 1672 / 941;
-    }
-
     * {
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       min-height: 100%;
       background: #f8f5f0;
@@ -26,96 +23,104 @@
     .hero {
       position: relative;
       width: 100%;
-      aspect-ratio: var(--hero-ratio);
+      aspect-ratio: 1672 / 941;
       overflow: hidden;
-      background: url("assets/background.png") center / 100% 100% no-repeat;
       isolation: isolate;
+      background: #f8f5f0;
       touch-action: pan-y;
     }
 
-    .layer {
+    .hero-base,
+    .parallax-layer,
+    .motion-part {
       position: absolute;
-      z-index: 2;
-      pointer-events: none;
-      will-change: transform;
-      transform: translate3d(0, 0, 0);
-    }
-
-    .part {
-      display: block;
+      inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+    }
+
+    .hero-base {
+      display: block;
+      object-fit: fill;
+      z-index: 0;
       user-select: none;
-      transform: translateZ(0);
+    }
+
+    .parallax-layer {
+      z-index: 1;
+      pointer-events: none;
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+    }
+
+    .motion-part {
+      display: block;
+      object-fit: fill;
+      user-select: none;
+      backface-visibility: hidden;
+      transform: translate3d(0, 0, 0);
       will-change: transform;
     }
 
     @keyframes floatA {
       0%, 100% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -3px, 0) scale(1.006); }
+      50% { transform: translate3d(0, -2.4px, 0); }
     }
 
     @keyframes floatB {
       0%, 100% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -4px, 0) scale(1.008); }
+      50% { transform: translate3d(0, -2.8px, 0); }
     }
 
     @keyframes flagWave {
-      0%, 100% { transform: skewY(0deg) scaleX(1); }
-      50% { transform: skewY(1.8deg) scaleX(0.985); }
+      0%, 100% {
+        transform: translate3d(0, 0, 0) skewY(-0.28deg) scaleX(0.998);
+      }
+      50% {
+        transform: translate3d(0, 0, 0) skewY(0.42deg) scaleX(0.992);
+      }
     }
 
     @keyframes bobA {
       0%, 100% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -3px, 0); }
+      50% { transform: translate3d(0, -1.6px, 0); }
     }
 
     @keyframes bobB {
       0%, 100% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -2px, 0); }
+      50% { transform: translate3d(0, -1.9px, 0); }
     }
 
     @keyframes swayA {
-      0%, 100% { transform: rotate(-0.55deg); }
-      50% { transform: rotate(0.65deg); }
+      0%, 100% { transform: rotate(-0.32deg); }
+      50% { transform: rotate(0.38deg); }
     }
 
     @keyframes swayB {
-      0%, 100% { transform: rotate(0.5deg); }
-      50% { transform: rotate(-0.6deg); }
+      0%, 100% { transform: rotate(0.30deg); }
+      50% { transform: rotate(-0.36deg); }
     }
 
     @keyframes grassSway {
-      0%, 100% { transform: rotate(-1deg) scaleY(1); }
-      50% { transform: rotate(1deg) scaleY(0.99); }
+      0%, 100% { transform: rotate(-0.55deg); }
+      50% { transform: rotate(0.60deg); }
     }
 
-    .float-a { animation: floatA 4.8s ease-in-out infinite; }
-    .float-b { animation: floatB 5.6s ease-in-out -1.4s infinite; }
-
-    .flag-wave {
-      transform-origin: 9% 48%;
-      animation: flagWave 2.4s ease-in-out infinite;
-    }
-
-    .bob-a { animation: bobA 3.8s ease-in-out infinite; }
-    .bob-b { animation: bobB 4.4s ease-in-out -1.1s infinite; }
-
-    .sway-a, .sway-b, .grass-sway {
-      transform-origin: 50% 100%;
-    }
-
-    .sway-a { animation: swayA 4.1s ease-in-out infinite; }
-    .sway-b { animation: swayB 4.7s ease-in-out -1.3s infinite; }
-    .grass-sway { animation: grassSway 3.6s ease-in-out infinite; }
+    .float-a { animation: floatA 5.2s ease-in-out infinite; }
+    .float-b { animation: floatB 6s ease-in-out -1.6s infinite; }
+    .flag-wave { animation: flagWave 2.8s ease-in-out infinite; }
+    .bob-a { animation: bobA 4.2s ease-in-out infinite; }
+    .bob-b { animation: bobB 4.8s ease-in-out -1.2s infinite; }
+    .sway-a { animation: swayA 4.4s ease-in-out infinite; }
+    .sway-b { animation: swayB 5s ease-in-out -1.4s infinite; }
+    .grass-sway { animation: grassSway 4s ease-in-out infinite; }
 
     @media (prefers-reduced-motion: reduce) {
-      .part {
+      .motion-part {
         animation: none !important;
       }
 
-      .layer {
+      .parallax-layer {
         transform: none !important;
       }
     }
@@ -123,79 +128,151 @@
 </head>
 <body>
   <section class="hero" id="hero" aria-label="H view business hero">
-    <div class="layer" data-depth="0.95" style="left:43.660287%;top:17.853348%;width:6.459330%;height:5.526036%;">
-      <img class="part float-a" src="assets/cloud_01.png" alt="" draggable="false">
+    <img class="hero-base" src="assets/background_clean.png" alt="H view">
+    <div class="parallax-layer" data-depth="0.55">
+      <img
+        class="motion-part float-a"
+        src="assets/cloud_01.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:50% 50%;"
+      >
     </div>
-    <div class="layer" data-depth="1.15" style="left:76.913876%;top:13.602550%;width:6.339713%;height:6.057386%;">
-      <img class="part float-b" src="assets/cloud_02.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.75">
+      <img
+        class="motion-part float-b"
+        src="assets/cloud_02.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:50% 50%;"
+      >
     </div>
-    <div class="layer" data-depth="0.75" style="left:70.693780%;top:13.177471%;width:5.980861%;height:7.545165%;">
-      <img class="part flag-wave" src="assets/flag_h.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.45">
+      <img
+        class="motion-part flag-wave"
+        src="assets/flag_h.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:71.4713% 17.0032%;"
+      >
     </div>
-    <div class="layer" data-depth="0.65" style="left:33.373206%;top:15.940489%;width:7.177033%;height:8.714134%;">
-      <img class="part bob-a" src="assets/label_food.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.38">
+      <img
+        class="motion-part bob-a"
+        src="assets/label_food.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:50% 50%;"
+      >
     </div>
-    <div class="layer" data-depth="0.9" style="left:84.808612%;top:20.191286%;width:7.775120%;height:7.863974%;">
-      <img class="part bob-b" src="assets/label_fitness.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.52">
+      <img
+        class="motion-part bob-b"
+        src="assets/label_fitness.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:50% 50%;"
+      >
     </div>
-    <div class="layer" data-depth="0.55" style="left:25.598086%;top:59.936238%;width:6.818182%;height:7.863974%;">
-      <img class="part bob-b" src="assets/label_beauty.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.32">
+      <img
+        class="motion-part bob-b"
+        src="assets/label_beauty.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:50% 50%;"
+      >
     </div>
-    <div class="layer" data-depth="0.8" style="left:84.808612%;top:57.810840%;width:10.287081%;height:10.414453%;">
-      <img class="part bob-a" src="assets/label_marketing.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.46">
+      <img
+        class="motion-part bob-a"
+        src="assets/label_marketing.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:50% 50%;"
+      >
     </div>
-    <div class="layer" data-depth="0.35" style="left:26.734450%;top:29.117960%;width:3.349282%;height:10.414453%;">
-      <img class="part sway-a" src="assets/tree_yellow.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.2">
+      <img
+        class="motion-part sway-a"
+        src="assets/tree_yellow.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:28.7081% 38.4697%;"
+      >
     </div>
-    <div class="layer" data-depth="0.45" style="left:30.203349%;top:23.379384%;width:2.811005%;height:13.283741%;">
-      <img class="part sway-b" src="assets/tree_green.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.25">
+      <img
+        class="motion-part sway-b"
+        src="assets/tree_green.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:31.3397% 36.1318%;"
+      >
     </div>
-    <div class="layer" data-depth="0.3" style="left:22.966507%;top:66.312434%;width:2.990431%;height:15.515409%;">
-      <img class="part sway-a" src="assets/tree_red.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.18">
+      <img
+        class="motion-part sway-a"
+        src="assets/tree_red.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:24.4617% 80.6589%;"
+      >
     </div>
-    <div class="layer" data-depth="0.4" style="left:94.497608%;top:35.919235%;width:3.110048%;height:11.370882%;">
-      <img class="part sway-b" src="assets/tree_right.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.22">
+      <img
+        class="motion-part sway-b"
+        src="assets/tree_right.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:95.9928% 46.4400%;"
+      >
     </div>
-    <div class="layer" data-depth="0.25" style="left:80.861244%;top:55.047821%;width:2.093301%;height:3.188098%;">
-      <img class="part grass-sway" src="assets/grass.png" alt="" draggable="false">
+    <div class="parallax-layer" data-depth="0.15">
+      <img
+        class="motion-part grass-sway"
+        src="assets/grass.png"
+        alt=""
+        draggable="false"
+        style="transform-origin:81.9378% 57.7046%;"
+      >
     </div>
   </section>
 
   <script>
     (() => {
       const hero = document.getElementById("hero");
-      const layers = [...hero.querySelectorAll(".layer")];
+      const layers = [...hero.querySelectorAll(".parallax-layer")];
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
       let targetX = 0;
       let targetY = 0;
       let currentX = 0;
       let currentY = 0;
-      let frame = null;
+      let rafId = null;
 
-      const render = () => {
-        currentX += (targetX - currentX) * 0.09;
-        currentY += (targetY - currentY) * 0.09;
+      function render() {
+        currentX += (targetX - currentX) * 0.08;
+        currentY += (targetY - currentY) * 0.08;
 
         layers.forEach((layer) => {
           const depth = Number(layer.dataset.depth || 0);
-          const x = currentX * depth;
-          const y = currentY * depth;
-          layer.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+          layer.style.transform =
+            `translate3d(${currentX * depth}px, ${currentY * depth}px, 0)`;
         });
 
-        if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
-          frame = requestAnimationFrame(render);
-        } else {
-          frame = null;
-        }
-      };
+        const moving =
+          Math.abs(targetX - currentX) > 0.01 ||
+          Math.abs(targetY - currentY) > 0.01;
 
-      const queueRender = () => {
-        if (!frame && !reducedMotion.matches) {
-          frame = requestAnimationFrame(render);
+        rafId = moving ? requestAnimationFrame(render) : null;
+      }
+
+      function requestRender() {
+        if (!rafId && !reducedMotion.matches) {
+          rafId = requestAnimationFrame(render);
         }
-      };
+      }
 
       hero.addEventListener("pointermove", (event) => {
         if (reducedMotion.matches) return;
@@ -204,16 +281,16 @@
         const nx = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
         const ny = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
 
-        // 奥行き感だけ出すため、移動量はかなり小さめ
-        targetX = nx * 2.1;
-        targetY = ny * 1.4;
-        queueRender();
+        // Very light parallax only.
+        targetX = nx * 1.8;
+        targetY = ny * 1.15;
+        requestRender();
       });
 
       hero.addEventListener("pointerleave", () => {
         targetX = 0;
         targetY = 0;
-        queueRender();
+        requestRender();
       });
     })();
   </script>
